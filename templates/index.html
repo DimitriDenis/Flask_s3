@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>S3 TUBE</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+    
+        header {
+            background-color: #f80;
+            color: white;
+            text-align: center;
+            padding: 10px;
+        }
+    
+        h1 {
+            margin: 0;
+        }
+    
+        main {
+            padding: 20px;
+        }
+    
+        h2 {
+            color: #333;
+        }
+    
+        ul {
+    list-style-type: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap; /* Permet aux éléments de passer à la ligne si l'espace est insuffisant */
+    justify-content: space-between; /* Répartit l'espace disponible entre les éléments */
+}
+
+li {
+    background-color: transparent;
+    padding: 20px;
+    margin: 10px;
+    flex-basis: calc(33.3333% - 20px); /* Définit la taille de base pour assurer trois éléments par ligne avec marge */
+    box-sizing: border-box; /* Assure que la largeur inclut les marges et le padding */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 20px 25px -5px, rgba(0, 0, 0, 0.04) 0px 10px 10px -5px;
+}
+
+li div {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 80%;
+}
+
+video {
+    width: 100%;
+    height: auto;
+    border-radius: 20px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 20px 25px -5px, rgba(0, 0, 0, 0.04) 0px 10px 10px -5px;
+}
+
+    
+        a {
+            color: #f80;
+            text-decoration: none;
+        }
+    
+        a:hover {
+            text-decoration: underline;
+        }
+    
+        form {
+            margin-top: 20px;
+        }
+    
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+    
+        input[type="file"] {
+            margin-bottom: 10px;
+        }
+
+        input::file-selector-button {
+        background-color: #00000063;
+        color: #fff;
+        cursor: pointer;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 3px;
+      }
+      input::file-selector-button:hover {
+        background-color: #0000002a;
+        transition: 0.3s ease-in-out;
+      }
+    
+        button[type="submit"] {
+            background-color: #f80;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+    
+        button[type="submit"]:hover {
+            background-color: #ff6347;
+        }
+    </style>
+    
+</head>
+<body>
+    <header>
+        <h1>S3 TUBE</h1>
+    </header>
+    
+    <main>
+      
+        
+        <h2>Vidéos en ligne :</h2>
+        
+        <!-- Afficher la liste des médias -->
+        <ul>
+            {% for video in videos %}
+            {% if loop.index != 1 %}
+                <li>
+                    <video width="320" height="240" controls>
+                        <source src="{{ video.video_presigned_url }}" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    <div>
+                        <h2>{{ video.title }}</h2>
+                        <br>
+                        <a href="{{ video.video_presigned_url }}" download> Télécharger la vidéo </a>
+                    </div>
+                        
+                </li>
+            {% endif %}
+        {% endfor %}
+        </ul>
+
+
+
+        <form action="/upload" method="post" enctype="multipart/form-data">
+            <label for="file">Choisissez une vidéo :</label>
+            <input type="file" name="video" accept="video/*" required>
+            <br>
+            <button type="submit">Uploader</button>
+        </form>
+    </main>
+</body>
+</html>
